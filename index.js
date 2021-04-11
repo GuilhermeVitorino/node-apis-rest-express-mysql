@@ -1,3 +1,13 @@
+require('dotenv').config()
+const connection = require('./infra/connection')
 const customExpress = require('./config/customExpress')
-const app = customExpress()
-app.listen(3000, () => console.log('servidor rodando na porta 3000'))
+
+connection.connect(erro => {
+    if (erro) {
+        console.log(erro);
+    } else {
+        console.log('database connected!')
+        const app = customExpress()
+        app.listen(3000, () => console.log('server running on port 3000'))
+    }
+})
