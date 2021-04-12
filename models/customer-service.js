@@ -2,16 +2,16 @@ const moment = require('moment');
 const connection = require('../infra/connection')
 
 class CustomerService {
-    add(customerService) {
-        const creation_date = moment().format('YYYY-MM-DD HH:MM:SS')
-        const date = moment(customerService.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
+    add(customerService, res) {
+        const creation_date = moment().format('YYYY-MM-DD HH:MM:ss')
+        const date = moment(customerService.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:ss')
         const customerServiceDated = {...customerService, creation_date, date }
         const sql = 'INSERT INTO customer_service SET ?'
-        connection.query(sql, customerServiceDated, (erro, result) => {
-            if (erro) {
-                console.log(erro)
+        connection.query(sql, customerServiceDated, (error, result) => {
+            if (error) {
+                res.status(400).json(error)
             } else {
-                console.log(result)
+                res.status(201).json(result)
             }
         })
     }

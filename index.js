@@ -10,6 +10,6 @@ connection.connect(erro => {
         console.log('database connected!')
         tables.init(connection)
         const app = customExpress()
-        app.listen(3000, () => console.log('server running on port 3000'))
+        app.listen(3003, () => console.log('server running on port 3000'))
     }
 })
