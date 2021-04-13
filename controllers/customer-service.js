@@ -14,4 +14,18 @@ module.exports = app => {
         const customerService = req.body
         CustomerService.add(customerService, res)
     })
+
+    app.patch('/customer-service/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        const values = req.body
+
+        CustomerService.update(id, values, res)
+    })
+
+    app.delete('/customer-service/:id', (req, res) => {
+
+        const id = parseInt(req.params.id)
+
+        CustomerService.delete(id, res)
+    })
 }

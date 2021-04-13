@@ -36,7 +36,7 @@ class CustomerService {
                 if (error) {
                     res.status(400).json(error)
                 } else {
-                    res.status(201).json(result)
+                    res.status(201).json(customerService)
                 }
             })
 
@@ -50,7 +50,7 @@ class CustomerService {
 
         connection.query(sql, (error, result) => {
             if (error) {
-                res.status(400).json(erro)
+                res.status(400).json(error)
             } else {
                 res.status(200).json(result)
             }
@@ -65,6 +65,36 @@ class CustomerService {
                 res.status(400).json(erro)
             } else {
                 res.status(200).json(result)
+            }
+        })
+    }
+
+    update(id, values, res) {
+
+        if (values.date) {
+            values.date = moment(values.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+        }
+
+        const sql = `UPDATE customer_service SET ? WHERE id = ?`
+
+        connection.query(sql, [values, id], (error, result) => {
+            if (error) {
+                res.status(400).json(error)
+            } else {
+                res.status(200).json({...values, id })
+            }
+        })
+    }
+
+    delete(id, res) {
+
+        const sql = `DELETE FROM customer_service WHERE id = ?`
+
+        connection.query(sql, id, (error, result) => {
+            if (error) {
+                res.status(400).json(error)
+            } else {
+                res.status(200).json({ id })
             }
         })
     }
