@@ -44,6 +44,30 @@ class CustomerService {
 
 
     }
+
+    list(res) {
+        const sql = 'SELECT * FROM customer_service'
+
+        connection.query(sql, (error, result) => {
+            if (error) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json(result)
+            }
+        })
+    }
+
+    listById(res, id) {
+        const sql = `SELECT * FROM customer_service WHERE id = ${id}`
+
+        connection.query(sql, (error, result) => {
+            if (error) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json(result)
+            }
+        })
+    }
 }
 
 module.exports = new CustomerService
