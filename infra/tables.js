@@ -3,6 +3,7 @@ class Tables {
     init(connection) {
         this.connection = connection
         this.createCustomerService()
+        this.createPet()
     }
 
     createCustomerService() {
@@ -12,9 +13,21 @@ class Tables {
             if (error) {
                 console.log(error)
             } else {
-                console.log('table customer_service created!')
+                console.log('table customer_service was created!')
             }
         })
+    }
+
+    createPet() {
+      const query = 'CREATE TABLE IF NOT EXISTS pets(id int NOT NULL AUTO_INCREMENT, name varchar(50), image varchar(2000), PRIMARY KEY (id))'
+
+      this.connection.query(query, error => {
+        if(error) {
+            console.log(error)
+        } else {
+            console.log('table pets was created')
+        }
+      })
     }
 
 
