@@ -1,4 +1,5 @@
-const moment = require('moment');
+const axios = require('axios')
+const moment = require('moment')
 const connection = require('../infra/connection')
 
 class CustomerService {
@@ -60,11 +61,17 @@ class CustomerService {
     listById(res, id) {
         const sql = `SELECT * FROM customer_service WHERE id = ${id}`
 
-        connection.query(sql, (error, result) => {
+        connection.query(sql, async (error, result) => {
+
+            const customer_service = result[0];
+            const cpf = customer_service.customer
+
             if (error) {
                 res.status(400).json(erro)
             } else {
-                res.status(200).json(result)
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+                customer_service.customer = data
+                res.status(200).json(customer_service)
             }
         })
     }
