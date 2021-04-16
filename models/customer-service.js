@@ -5,26 +5,45 @@ const repository = require('../repositories/customer-service')
 
 class CustomerService {
 
-  add(customerService) {
-    const creation_date = moment().format('YYYY-MM-DD HH:mm:ss')
-    const date = moment(customerService.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+  constructor() {
 
-    const dateIsValid = moment(date).isSameOrAfter(creation_date)
-    const customerIsValid = customerService.customer.length > 5
+    this.dateIsValid = (date, creation_date) => moment(date).isSameOrAfter(creation_date)
+    this.customerIsValid = (size) => size > 5
 
-    const validations = [{
+    this.validates = params => {
+      this.validations.filter(field => {
+        const { name } = field
+        const param = params[name]
+
+        return !field.valid(param)
+      })
+    }
+
+    this.validations = [{
       name: 'date',
-      valid: dateIsValid,
+      valid: this.dateIsValid,
       message: 'date must be greater than or equal current date'
     },
     {
       name: 'customer',
-      valid: customerIsValid,
+      valid: this.customerIsValid,
       message: 'customer must be have length greater than 5 characters'
     }
     ]
 
-    const errors = validations.filter(field => !field.valid)
+
+  }
+
+  add(customerService) {
+    const creation_date = moment().format('YYYY-MM-DD HH:mm:ss')
+    const date = moment(customerService.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+
+    const params = {
+      date: { date, creation_date },
+      customer: { size: customerService.customer.length }
+    }
+
+    const errors = this.validates(params)
     const hasErrros = errors.length
 
     if (hasErrros) {
@@ -43,16 +62,8 @@ class CustomerService {
     }
   }
 
-  list(res) {
-    const sql = 'SELECT * FROM customer_service'
-
-    connection.query(sql, (error, result) => {
-      if (error) {
-        res.status(400).json(error)
-      } else {
-        res.status(200).json(result)
-      }
-    })
+  list() {
+    return repository.list()
   }
 
   listById(res, id) {

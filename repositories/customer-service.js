@@ -6,6 +6,11 @@ class CustomerService {
     const sql = 'INSERT INTO customer_service SET ?'
     return query(sql, customer_service)
   }
+
+  list(){
+    const sql = 'SELECT * FROM customer_service'
+    return query(sql)
+  }
   
 }
 

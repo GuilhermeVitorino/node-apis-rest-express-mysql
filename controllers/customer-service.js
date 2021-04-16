@@ -1,8 +1,11 @@
 const CustomerService = require('../models/customer-service')
 
 module.exports = app => {
+  
   app.get('/customer-service', (req, res) => {
-    CustomerService.list(res)
+    CustomerService.list()
+      .then(results => res.status(200).json(results))
+      .catch(error => res.status(400).json(error))
   })
 
   app.get('/customer-service/:id', (req, res) => {
