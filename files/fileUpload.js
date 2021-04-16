@@ -11,7 +11,7 @@ module.exports = (filePath, fileName, callbackCreatedImage) => {
     const newFilePath = `./assets/images/${fileName}${type}`
     fs.createReadStream(filePath)
       .pipe(fs.createWriteStream(newFilePath))
-      .on('finish', () => callbackCreatedImage(newFilePath))
+      .on('finish', () => callbackCreatedImage(false, newFilePath))
   } else {
     const error = 'Invalid type'
     callbackCreatedImage(error)
